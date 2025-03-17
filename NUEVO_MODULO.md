@@ -1,7 +1,7 @@
 # Checklist para Crear un Nuevo Módulo
 
-- Para una implementación paso a paso ver [EJEMPLO MÓDULO](EJEMPLO_MODULO)
-- Para crear un módulo de manera automática se puede usar [GENERADOR MÓDULOS](GENERADOR_MODULOS)
+- Para una implementación paso a paso ver [EJEMPLO MÓDULO](EJEMPLO_MODULO.md)
+  - Para crear un módulo de manera automática se puede usar [GENERADOR MÓDULOS](GENERADOR_MODULOS.md)
 
 ## 1. Planificación y Diseño
 - [ ] Definir el propósito y responsabilidades del módulo

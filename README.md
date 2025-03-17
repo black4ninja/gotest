@@ -2,6 +2,9 @@
 
 Este proyecto implementa una API REST monolítica con una arquitectura interna que simula microservicios, utilizando Go, Gin y MongoDB. El diseño sigue los principios de Clean Architecture y está estructurado para facilitar el mantenimiento y el crecimiento.
 
+## Introducción a GO
+- Puedes consultar el siguiente archivo para tener más contexto del lenguaje y la arquitectura [GO INTRO](GO_INTRO.md)
+
 ## Características
 
 - **Autenticación OAuth 2.0**: Sistema completo de autenticación con soporte para diferentes tipos de grants

@@ -8,7 +8,6 @@ import (
 	"time"
 
 	"github.com/joho/godotenv"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
@@ -203,8 +202,8 @@ func createDefaultAdminUser(
 	userRoleService permDomain.UserRoleUseCase,
 ) {
 	// Configuración del usuario admin predeterminado
-	adminEmail := getEnv("DEFAULT_ADMIN_EMAIL", "admin@sistema.com")
-	adminPassword := getEnv("DEFAULT_ADMIN_PASSWORD", "AdminPass123!")
+	adminEmail := getEnvPerms("DEFAULT_ADMIN_EMAIL", "admin@sistema.com")
+	adminPassword := getEnvPerms("DEFAULT_ADMIN_PASSWORD", "AdminPass123!")
 
 	// Verificar si ya existe
 	existingUser, err := userService.GetUserByEmail(adminEmail)
@@ -212,7 +211,7 @@ func createDefaultAdminUser(
 		log.Println("El usuario admin ya existe, verificando permisos...")
 
 		// Si existe, verificar si tiene el rol admin y asignarlo si no lo tiene
-		userRoles, err := userRoleService.GetUserRoles(existingUser.ID)
+		userRoles, err := userRoleService.GetUserRoles(existingUser.ID.Hex())
 		if err == nil && len(userRoles.Roles) > 0 {
 			log.Println("El usuario admin ya tiene roles asignados")
 			return
@@ -227,7 +226,7 @@ func createDefaultAdminUser(
 
 		// Asignar el rol al usuario existente
 		err = userRoleService.AssignRoleToUser(&permDomain.AssignRoleRequest{
-			UserID: existingUser.ID,
+			UserID: existingUser.ID.Hex(),
 			RoleID: adminRole.ID,
 		})
 		if err != nil {

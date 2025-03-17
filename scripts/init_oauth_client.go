@@ -22,8 +22,8 @@ func main() {
 	}
 
 	// Configurar MongoDB
-	mongoURI := getEnv("MONGO_URI", "mongodb://localhost:27017")
-	mongoDBName := getEnv("MONGO_DB", "my_database")
+	mongoURI := getEnvOauth("MONGO_URI", "mongodb://localhost:27017")
+	mongoDBName := getEnvOauth("MONGO_DB", "my_database")
 
 	// Conectar a MongoDB
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
@@ -76,7 +76,7 @@ func main() {
 }
 
 // getEnv obtiene una variable de entorno o retorna un valor por defecto
-func getEnv(key, defaultValue string) string {
+func getEnvOauth(key, defaultValue string) string {
 	value, exists := os.LookupEnv(key)
 	if !exists {
 		return defaultValue

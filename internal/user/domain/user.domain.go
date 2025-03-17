@@ -13,17 +13,18 @@ const (
 )
 
 // User representa la entidad de usuario
+// @Description Entidad completa de usuario
 type User struct {
-	ID           primitive.ObjectID `json:"id" bson:"_id,omitempty"`
-	Email        string             `json:"email" bson:"email"`
-	Name         string             `json:"name" bson:"name"`
-	Password     string             `json:"-" bson:"password"`
-	Status       string             `json:"status" bson:"status"`
-	Role         string             `json:"role" bson:"role"`
-	RefreshToken string             `json:"-" bson:"refresh_token,omitempty"`
-	CreatedAt    time.Time          `json:"created_at" bson:"created_at"`
-	UpdatedAt    time.Time          `json:"updated_at" bson:"updated_at"`
-	ArchivedAt   *time.Time         `json:"archived_at,omitempty" bson:"archived_at,omitempty"`
+	ID           primitive.ObjectID `json:"id" bson:"_id,omitempty" example:"60f1e5e5e5e5e5e5e5e5e5e5"`  // ID único del usuario
+	Email        string             `json:"email" bson:"email" example:"usuario@example.com"`            // Email del usuario
+	Name         string             `json:"name" bson:"name" example:"Juan Pérez"`                       // Nombre completo del usuario
+	Password     string             `json:"-" bson:"password"`                                           // Contraseña hasheada (no incluida en JSON)
+	Status       string             `json:"status" bson:"status" example:"active"`                       // Estado: active, inactive, archived
+	Role         string             `json:"role" bson:"role" example:"user"`                             // Rol del usuario
+	RefreshToken string             `json:"-" bson:"refresh_token,omitempty"`                            // Token de refresco (no incluido en JSON)
+	CreatedAt    time.Time          `json:"created_at" bson:"created_at" example:"2023-07-10T15:04:05Z"` // Fecha de creación
+	UpdatedAt    time.Time          `json:"updated_at" bson:"updated_at" example:"2023-07-10T15:04:05Z"` // Fecha de última actualización
+	ArchivedAt   *time.Time         `json:"archived_at,omitempty" bson:"archived_at,omitempty"`          // Fecha de archivado (si aplica)
 }
 
 // CreateUserRequest representa la solicitud para crear un usuario
@@ -49,14 +50,15 @@ type ChangePasswordRequest struct {
 }
 
 // UserResponse representa la respuesta con datos de usuario
+// @Description Estructura de respuesta para información de usuario
 type UserResponse struct {
-	ID        string    `json:"id"`
-	Email     string    `json:"email"`
-	Name      string    `json:"name"`
-	Status    string    `json:"status"`
-	Role      string    `json:"role"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
+	ID        string    `json:"id" example:"60f1e5e5e5e5e5e5e5e5e5e5"`     // ID único del usuario
+	Email     string    `json:"email" example:"usuario@example.com"`       // Email del usuario
+	Name      string    `json:"name" example:"Juan Pérez"`                 // Nombre completo del usuario
+	Status    string    `json:"status" example:"active"`                   // Estado: active, inactive, archived
+	Role      string    `json:"role" example:"user"`                       // Rol del usuario
+	CreatedAt time.Time `json:"created_at" example:"2023-07-10T15:04:05Z"` // Fecha de creación
+	UpdatedAt time.Time `json:"updated_at" example:"2023-07-10T15:04:05Z"` // Fecha de última actualización
 }
 
 // UserRepository define el contrato para la capa de persistencia

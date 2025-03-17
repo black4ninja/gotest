@@ -34,7 +34,21 @@ func NewUserHandler(router *gin.RouterGroup, useCase domain.UserUseCase) {
 	router.GET("/me", handler.GetProfile)
 }
 
-// GetAllUsers manejador para obtener todos los usuarios
+// @Summary Obtener todos los usuarios
+// @Description Obtiene una lista de todos los usuarios con filtrado opcional
+// @Tags usuarios
+// @Accept json
+// @Produce json
+// @Param status query string false "Estado del usuario (active, inactive, archived)"
+// @Param role query string false "Rol del usuario"
+// @Param name query string false "Nombre del usuario (búsqueda parcial)"
+// @Param email query string false "Email del usuario (búsqueda parcial)"
+// @Param created_from query string false "Fecha de creación desde (formato ISO8601)"
+// @Param created_to query string false "Fecha de creación hasta (formato ISO8601)"
+// @Success 200 {object} utils.Response{data=[]domain.UserResponse} "Lista de usuarios"
+// @Failure 500 {object} utils.Response "Error interno"
+// @Router /users [get]
+// @Security BearerAuth
 func (h *UserHandler) GetAllUsers(c *gin.Context) {
 	// Extraer todos los parámetros de consulta
 	queryParams := make(map[string]string)
@@ -108,7 +122,17 @@ func (h *UserHandler) GetAllUsers(c *gin.Context) {
 	utils.SuccessResponse(c, http.StatusOK, "Usuarios obtenidos con éxito", users)
 }
 
-// GetUser manejador para obtener un usuario
+// @Summary Obtener un usuario
+// @Description Obtiene un usuario por su ID
+// @Tags usuarios
+// @Accept json
+// @Produce json
+// @Param id path string true "ID del usuario"
+// @Success 200 {object} utils.Response{data=domain.UserResponse} "Usuario obtenido"
+// @Failure 404 {object} utils.Response "Usuario no encontrado"
+// @Failure 500 {object} utils.Response "Error interno"
+// @Router /users/{id} [get]
+// @Security BearerAuth
 func (h *UserHandler) GetUser(c *gin.Context) {
 	id := c.Param("id")
 
@@ -121,7 +145,17 @@ func (h *UserHandler) GetUser(c *gin.Context) {
 	utils.SuccessResponse(c, http.StatusOK, "Usuario obtenido con éxito", user)
 }
 
-// CreateUser manejador para crear un usuario
+// @Summary Crear un usuario
+// @Description Crea un nuevo usuario
+// @Tags usuarios
+// @Accept json
+// @Produce json
+// @Param user body domain.CreateUserRequest true "Datos del usuario"
+// @Success 201 {object} utils.Response{data=domain.UserResponse} "Usuario creado"
+// @Failure 400 {object} utils.Response "Datos inválidos"
+// @Failure 500 {object} utils.Response "Error interno"
+// @Router /users [post]
+// @Security BearerAuth
 func (h *UserHandler) CreateUser(c *gin.Context) {
 	var req domain.CreateUserRequest
 	if err := c.ShouldBindJSON(&req); err != nil {

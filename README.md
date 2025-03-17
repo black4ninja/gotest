@@ -187,6 +187,60 @@ Ejecutar todas las pruebas:
 go test ./...
 ```
 
+## Documentación API con Swagger
+
+El proyecto incluye generación automática de documentación API con Swagger.
+
+### Uso de la documentación
+
+Una vez que el servidor esté en ejecución, puedes acceder a la documentación interactiva de la API en:
+
+```
+/swagger/index.html
+```
+
+### Generar documentación
+
+Para generar o actualizar la documentación Swagger:
+
+```bash
+# Generar documentación para toda la API
+go run cmd/tools/generate_module.go swagger
+
+# Añadir anotaciones Swagger a un módulo específico
+go run cmd/tools/generate_module.go swagger module nombre_modulo
+
+# Añadir anotaciones Swagger a todos los módulos existentes
+go run cmd/tools/generate_module.go swagger all
+
+# Actualizar el generador de módulos para incluir anotaciones Swagger
+go run cmd/tools/generate_module.go update-generator
+```
+
+### Crear nuevos módulos con soporte Swagger
+Los nuevos módulos generados incluirán automáticamente las anotaciones Swagger:
+
+```bash
+go run cmd/tools/generate_module.go module nuevo_modulo
+```
+
+### Ejemplo de uso
+
+Una vez implementado todo esto, podrás:
+
+1. Añadir anotaciones Swagger a los módulos existentes:
+```bash
+   go run cmd/tools/generate_module.go swagger all
+```
+2. Generar la documentación Swagger:
+```bash
+   go run cmd/tools/generate_module.go swagger
+```
+3. Iniciar tu aplicación y acceder a la documentación en:
+```bash
+   http://localhost:3000/swagger/index.html
+```
+
 ## Licencia
 
 [MIT](LICENSE)

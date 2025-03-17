@@ -7,6 +7,8 @@ import (
 )
 
 // Permission representa un permiso individual en el sistema
+// Permission representa la entidad de permission
+// @Description Entidad completa de permission
 type Permission struct {
 	ID          primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Code        string             `json:"code" bson:"code"`     // Formato: "module:submodule:action"
@@ -31,6 +33,8 @@ type PermissionRepository interface {
 }
 
 // CreatePermissionRequest representa la solicitud para crear un permiso
+// CreatePermissionRequest representa la solicitud para crear un permission
+// @Description Datos necesarios para crear un permission
 type CreatePermissionRequest struct {
 	Code        string `json:"code" binding:"required"`
 	Module      string `json:"module" binding:"required"`
@@ -40,12 +44,16 @@ type CreatePermissionRequest struct {
 }
 
 // UpdatePermissionRequest representa la solicitud para actualizar un permiso
+// UpdatePermissionRequest representa la solicitud para actualizar un permission
+// @Description Datos para actualizar un permission
 type UpdatePermissionRequest struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 }
 
 // PermissionResponse representa la respuesta con datos de permisos
+// PermissionResponse representa la respuesta con datos de permission
+// @Description Estructura de respuesta para información de permission
 type PermissionResponse struct {
 	ID          string    `json:"id"`
 	Code        string    `json:"code"`

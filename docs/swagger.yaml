@@ -1,0 +1,441 @@
+basePath: /api
+definitions:
+  domain.CreatePermissionRequest:
+    description: Datos necesarios para crear un permission
+    properties:
+      action:
+        type: string
+      code:
+        type: string
+      description:
+        type: string
+      module:
+        type: string
+      name:
+        type: string
+    required:
+    - action
+    - code
+    - module
+    - name
+    type: object
+  domain.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        minLength: 6
+        type: string
+      role:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  domain.PermissionResponse:
+    description: Estructura de respuesta para información de permission
+    properties:
+      action:
+        type: string
+      code:
+        type: string
+      created_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      module:
+        type: string
+      name:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  domain.UpdatePermissionRequest:
+    description: Datos para actualizar un permission
+    properties:
+      description:
+        type: string
+      name:
+        type: string
+    type: object
+  domain.UserResponse:
+    description: Estructura de respuesta para información de usuario
+    properties:
+      created_at:
+        description: Fecha de creación
+        example: "2023-07-10T15:04:05Z"
+        type: string
+      email:
+        description: Email del usuario
+        example: usuario@example.com
+        type: string
+      id:
+        description: ID único del usuario
+        example: 60f1e5e5e5e5e5e5e5e5e5e5
+        type: string
+      name:
+        description: Nombre completo del usuario
+        example: Juan Pérez
+        type: string
+      role:
+        description: Rol del usuario
+        example: user
+        type: string
+      status:
+        description: 'Estado: active, inactive, archived'
+        example: active
+        type: string
+      updated_at:
+        description: Fecha de última actualización
+        example: "2023-07-10T15:04:05Z"
+        type: string
+    type: object
+  utils.Response:
+    properties:
+      data: {}
+      error:
+        type: string
+      message:
+        type: string
+      status:
+        type: string
+    type: object
+host: localhost:3000
+info:
+  contact:
+    email: soporte@tu-compania.com
+    name: API Support
+    url: http://www.tu-compania.com/support
+  description: API REST monolítica con arquitectura interna de microservicios usando
+    Go, Gin y MongoDB
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: http://swagger.io/terms/
+  title: API Monolítica con Arquitectura de Microservicios
+  version: "1.0"
+paths:
+  /permissions:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista de todos los permissions con filtrado opcional
+      parameters:
+      - description: Estado del permission (active, inactive, archived)
+        in: query
+        name: status
+        type: string
+      - description: Nombre del permission (búsqueda parcial)
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Lista de permissions
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/domain.PermissionResponse'
+                  type: array
+              type: object
+        "500":
+          description: Error interno
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Obtener todos los permissions
+      tags:
+      - permissions
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo permission
+      parameters:
+      - description: Datos del permission
+        in: body
+        name: permission
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreatePermissionRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Permission creado
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.PermissionResponse'
+              type: object
+        "400":
+          description: Datos inválidos
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Error interno
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Crear un permission
+      tags:
+      - permissions
+  /permissions/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Elimina un permission por su ID
+      parameters:
+      - description: ID del permission
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Permission eliminado
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: No encontrado
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Error interno
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Eliminar un permission
+      tags:
+      - permissions
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un permission por su ID
+      parameters:
+      - description: ID del permission
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Permission obtenido
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.PermissionResponse'
+              type: object
+        "404":
+          description: No encontrado
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Error interno
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Obtener un permission
+      tags:
+      - permissions
+    put:
+      consumes:
+      - application/json
+      description: Actualiza un permission existente
+      parameters:
+      - description: ID del permission
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Datos a actualizar
+        in: body
+        name: permission
+        required: true
+        schema:
+          $ref: '#/definitions/domain.UpdatePermissionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Permission actualizado
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.PermissionResponse'
+              type: object
+        "400":
+          description: Datos inválidos
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "404":
+          description: No encontrado
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Error interno
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Actualizar un permission
+      tags:
+      - permissions
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene una lista de todos los usuarios con filtrado opcional
+      parameters:
+      - description: Estado del usuario (active, inactive, archived)
+        in: query
+        name: status
+        type: string
+      - description: Rol del usuario
+        in: query
+        name: role
+        type: string
+      - description: Nombre del usuario (búsqueda parcial)
+        in: query
+        name: name
+        type: string
+      - description: Email del usuario (búsqueda parcial)
+        in: query
+        name: email
+        type: string
+      - description: Fecha de creación desde (formato ISO8601)
+        in: query
+        name: created_from
+        type: string
+      - description: Fecha de creación hasta (formato ISO8601)
+        in: query
+        name: created_to
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Lista de usuarios
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.Response'
+            - properties:
+                data:
+                  items:
+                    $ref: '#/definitions/domain.UserResponse'
+                  type: array
+              type: object
+        "500":
+          description: Error interno
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Obtener todos los usuarios
+      tags:
+      - usuarios
+    post:
+      consumes:
+      - application/json
+      description: Crea un nuevo usuario
+      parameters:
+      - description: Datos del usuario
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/domain.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Usuario creado
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.UserResponse'
+              type: object
+        "400":
+          description: Datos inválidos
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Error interno
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Crear un usuario
+      tags:
+      - usuarios
+  /users/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Obtiene un usuario por su ID
+      parameters:
+      - description: ID del usuario
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Usuario obtenido
+          schema:
+            allOf:
+            - $ref: '#/definitions/utils.Response'
+            - properties:
+                data:
+                  $ref: '#/definitions/domain.UserResponse'
+              type: object
+        "404":
+          description: Usuario no encontrado
+          schema:
+            $ref: '#/definitions/utils.Response'
+        "500":
+          description: Error interno
+          schema:
+            $ref: '#/definitions/utils.Response'
+      security:
+      - BearerAuth: []
+      summary: Obtener un usuario
+      tags:
+      - usuarios
+schemes:
+- http
+- https
+securityDefinitions:
+  BearerAuth:
+    description: 'Ingresa tu token con el formato: Bearer {token}'
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

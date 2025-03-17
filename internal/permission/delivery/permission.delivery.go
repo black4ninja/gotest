@@ -68,6 +68,17 @@ func NewPermissionHandler(
 }
 
 // GetAllPermissions manejador para obtener todos los permisos
+// @Summary Obtener todos los permissions
+// @Description Obtiene una lista de todos los permissions con filtrado opcional
+// @Tags permissions
+// @Accept json
+// @Produce json
+// @Param status query string false "Estado del permission (active, inactive, archived)"
+// @Param name query string false "Nombre del permission (búsqueda parcial)"
+// @Success 200 {object} utils.Response{data=[]domain.PermissionResponse} "Lista de permissions"
+// @Failure 500 {object} utils.Response "Error interno"
+// @Router /permissions [get]
+// @Security BearerAuth
 func (h *PermissionHandler) GetAllPermissions(c *gin.Context) {
 	permissions, err := h.permissionUC.GetAllPermissions()
 	if err != nil {
@@ -79,6 +90,17 @@ func (h *PermissionHandler) GetAllPermissions(c *gin.Context) {
 }
 
 // GetPermission manejador para obtener un permiso por ID
+// @Summary Obtener un permission
+// @Description Obtiene un permission por su ID
+// @Tags permissions
+// @Accept json
+// @Produce json
+// @Param id path string true "ID del permission"
+// @Success 200 {object} utils.Response{data=domain.PermissionResponse} "Permission obtenido"
+// @Failure 404 {object} utils.Response "No encontrado"
+// @Failure 500 {object} utils.Response "Error interno"
+// @Router /permissions/{id} [get]
+// @Security BearerAuth
 func (h *PermissionHandler) GetPermission(c *gin.Context) {
 	id := c.Param("id")
 
@@ -118,6 +140,17 @@ func (h *PermissionHandler) GetPermissionsByModule(c *gin.Context) {
 }
 
 // CreatePermission manejador para crear un permiso
+// @Summary Crear un permission
+// @Description Crea un nuevo permission
+// @Tags permissions
+// @Accept json
+// @Produce json
+// @Param permission body domain.CreatePermissionRequest true "Datos del permission"
+// @Success 201 {object} utils.Response{data=domain.PermissionResponse} "Permission creado"
+// @Failure 400 {object} utils.Response "Datos inválidos"
+// @Failure 500 {object} utils.Response "Error interno"
+// @Router /permissions [post]
+// @Security BearerAuth
 func (h *PermissionHandler) CreatePermission(c *gin.Context) {
 	var req domain.CreatePermissionRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -135,6 +168,19 @@ func (h *PermissionHandler) CreatePermission(c *gin.Context) {
 }
 
 // UpdatePermission manejador para actualizar un permiso
+// @Summary Actualizar un permission
+// @Description Actualiza un permission existente
+// @Tags permissions
+// @Accept json
+// @Produce json
+// @Param id path string true "ID del permission"
+// @Param permission body domain.UpdatePermissionRequest true "Datos a actualizar"
+// @Success 200 {object} utils.Response{data=domain.PermissionResponse} "Permission actualizado"
+// @Failure 400 {object} utils.Response "Datos inválidos"
+// @Failure 404 {object} utils.Response "No encontrado"
+// @Failure 500 {object} utils.Response "Error interno"
+// @Router /permissions/{id} [put]
+// @Security BearerAuth
 func (h *PermissionHandler) UpdatePermission(c *gin.Context) {
 	id := c.Param("id")
 
@@ -154,6 +200,17 @@ func (h *PermissionHandler) UpdatePermission(c *gin.Context) {
 }
 
 // DeletePermission manejador para eliminar un permiso
+// @Summary Eliminar un permission
+// @Description Elimina un permission por su ID
+// @Tags permissions
+// @Accept json
+// @Produce json
+// @Param id path string true "ID del permission"
+// @Success 200 {object} utils.Response "Permission eliminado"
+// @Failure 404 {object} utils.Response "No encontrado"
+// @Failure 500 {object} utils.Response "Error interno"
+// @Router /permissions/{id} [delete]
+// @Security BearerAuth
 func (h *PermissionHandler) DeletePermission(c *gin.Context) {
 	id := c.Param("id")
 
